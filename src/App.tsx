@@ -1,23 +1,19 @@
 import {
-  InformationCircleIcon,
   ChartBarIcon,
   SunIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
 import { Alert } from './components/alerts/Alert'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
-import { AboutModal } from './components/modals/AboutModal'
 import { InfoModal } from './components/modals/InfoModal'
 import { StatsModal } from './components/modals/StatsModal'
 import {
   GAME_TITLE,
-  WIN_MESSAGES,
   GAME_COPIED_MESSAGE,
-  ABOUT_GAME_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
   WORD_NOT_FOUND_MESSAGE,
-  CORRECT_WORD_MESSAGE,
 } from './constants/strings'
 import { isWordInWordList, isWinningWord, solution } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
@@ -27,6 +23,7 @@ import {
 } from './lib/localStorage'
 
 import './App.css'
+import { MAX_GUESSES, WORD_LENGTH } from './constants/wordlist'
 
 const ALERT_TIME_MS = 2000
 
@@ -38,7 +35,6 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState('')
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
-  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isNotEnoughLetters, setIsNotEnoughLetters] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
@@ -60,7 +56,7 @@ function App() {
     if (gameWasWon) {
       setIsGameWon(true)
     }
-    if (loaded.guesses.length === 6 && !gameWasWon) {
+    if (loaded.guesses.length === MAX_GUESSES && !gameWasWon) {
       setIsGameLost(true)
     }
     return loaded.guesses
@@ -86,24 +82,18 @@ function App() {
   }, [guesses])
 
   useEffect(() => {
-    if (isGameWon) {
-      setSuccessAlert(
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      )
-      setTimeout(() => {
-        setSuccessAlert('')
-        setIsStatsModalOpen(true)
-      }, ALERT_TIME_MS)
-    }
-    if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, ALERT_TIME_MS)
+    if (isGameWon || isGameLost) {
+      setSuccessAlert('')
+      setIsStatsModalOpen(true)
     }
   }, [isGameWon, isGameLost])
 
   const onChar = (value: string) => {
-    if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
+    if (
+      currentGuess.length < WORD_LENGTH &&
+      guesses.length < MAX_GUESSES &&
+      !isGameWon
+    ) {
       setCurrentGuess(`${currentGuess}${value}`)
     }
   }
@@ -116,7 +106,7 @@ function App() {
     if (isGameWon || isGameLost) {
       return
     }
-    if (!(currentGuess.length === 5)) {
+    if (!(currentGuess.length === WORD_LENGTH)) {
       setIsNotEnoughLetters(true)
       return setTimeout(() => {
         setIsNotEnoughLetters(false)
@@ -132,7 +122,11 @@ function App() {
 
     const winningWord = isWinningWord(currentGuess)
 
-    if (currentGuess.length === 5 && guesses.length < 6 && !isGameWon) {
+    if (
+      currentGuess.length === WORD_LENGTH &&
+      guesses.length < MAX_GUESSES &&
+      !isGameWon
+    ) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
 
@@ -141,7 +135,7 @@ function App() {
         return setIsGameWon(true)
       }
 
-      if (guesses.length === 5) {
+      if (guesses.length === MAX_GUESSES - 1) {
         setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         setIsGameLost(true)
       }
@@ -150,14 +144,14 @@ function App() {
 
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-12">
+      <div className="flex w-80 mx-auto items-center mb-2">
         <h1 className="text-xl grow font-bold dark:text-white">{GAME_TITLE}</h1>
         <SunIcon
           className="h-6 w-6 cursor-pointer dark:stroke-white"
           onClick={() => handleDarkMode(!isDarkMode)}
         />
-        <InformationCircleIcon
-          className="h-6 w-6 cursor-pointer dark:stroke-white"
+        <QuestionMarkCircleIcon
+          className="h-6 w-6 cursor-pointer flip dark:stroke-white"
           onClick={() => setIsInfoModalOpen(true)}
         />
         <ChartBarIcon
@@ -188,25 +182,12 @@ function App() {
           return setTimeout(() => setSuccessAlert(''), ALERT_TIME_MS)
         }}
       />
-      <AboutModal
-        isOpen={isAboutModalOpen}
-        handleClose={() => setIsAboutModalOpen(false)}
-      />
-
-      <button
-        type="button"
-        className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
-        onClick={() => setIsAboutModalOpen(true)}
-      >
-        {ABOUT_GAME_MESSAGE}
-      </button>
 
       <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
       <Alert
         message={WORD_NOT_FOUND_MESSAGE}
         isOpen={isWordNotFoundAlertOpen}
       />
-      <Alert message={CORRECT_WORD_MESSAGE(solution)} isOpen={isGameLost} />
       <Alert
         message={successAlert}
         isOpen={successAlert !== ''}

@@ -1,8 +1,7 @@
 import { KeyValue } from '../../lib/keyboard'
-import { getStatuses } from '../../lib/statuses'
+import { CharValues, getStatuses } from '../../lib/statuses'
 import { Key } from './Key'
 import { useEffect } from 'react'
-import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 
 type Props = {
   onChar: (value: string) => void
@@ -32,7 +31,7 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
         onDelete()
       } else {
         const key = e.key.toUpperCase()
-        if (key.length === 1 && key >= 'A' && key <= 'Z') {
+        if (key.length === 1 && key in CharValues) {
           onChar(key)
         }
       }
@@ -44,43 +43,85 @@ export const Keyboard = ({ onChar, onDelete, onEnter, guesses }: Props) => {
   }, [onEnter, onDelete, onChar])
 
   return (
-    <div>
+    <div className="keyboard">
       <div className="flex justify-center mb-1">
-        <Key value="Q" onClick={onClick} status={charStatuses['Q']} />
-        <Key value="W" onClick={onClick} status={charStatuses['W']} />
-        <Key value="E" onClick={onClick} status={charStatuses['E']} />
-        <Key value="R" onClick={onClick} status={charStatuses['R']} />
-        <Key value="T" onClick={onClick} status={charStatuses['T']} />
-        <Key value="Y" onClick={onClick} status={charStatuses['Y']} />
-        <Key value="U" onClick={onClick} status={charStatuses['U']} />
-        <Key value="I" onClick={onClick} status={charStatuses['I']} />
-        <Key value="O" onClick={onClick} status={charStatuses['O']} />
-        <Key value="P" onClick={onClick} status={charStatuses['P']} />
+        <Key value="ض" onClick={onClick} status={charStatuses['ض']} />
+        <Key value="ص" onClick={onClick} status={charStatuses['ص']} />
+        <Key value="غ" onClick={onClick} status={charStatuses['غ']} />
+        <Key value="ژ" onClick={onClick} status={charStatuses['ژ']} />
+        <Key value="ڑ" onClick={onClick} status={charStatuses['ڑ']} />
+        <Key value="ٹ" onClick={onClick} status={charStatuses['ٹ']} />
+        <Key value="ث" onClick={onClick} status={charStatuses['ث']} />
+        <Key value="ح" onClick={onClick} status={charStatuses['ح']} />
+        <Key value="ئ" onClick={onClick} status={charStatuses['ئ']} />
+        <Key value="ظ" onClick={onClick} status={charStatuses['ظ']} />
+        <Key value="ط" onClick={onClick} status={charStatuses['ط']} />
       </div>
       <div className="flex justify-center mb-1">
-        <Key value="A" onClick={onClick} status={charStatuses['A']} />
-        <Key value="S" onClick={onClick} status={charStatuses['S']} />
-        <Key value="D" onClick={onClick} status={charStatuses['D']} />
-        <Key value="F" onClick={onClick} status={charStatuses['F']} />
-        <Key value="G" onClick={onClick} status={charStatuses['G']} />
-        <Key value="H" onClick={onClick} status={charStatuses['H']} />
-        <Key value="J" onClick={onClick} status={charStatuses['J']} />
-        <Key value="K" onClick={onClick} status={charStatuses['K']} />
-        <Key value="L" onClick={onClick} status={charStatuses['L']} />
+        <Key value="ق" onClick={onClick} status={charStatuses['ق']} />
+        <Key value="و" onClick={onClick} status={charStatuses['و']} />
+        <Key value="ع" onClick={onClick} status={charStatuses['ع']} />
+        <Key value="ر" onClick={onClick} status={charStatuses['ر']} />
+        <Key value="ت" onClick={onClick} status={charStatuses['ت']} />
+        <Key value="ے" onClick={onClick} status={charStatuses['ے']} />
+        <Key value="ء" onClick={onClick} status={charStatuses['ء']} />
+        <Key value="ی" onClick={onClick} status={charStatuses['ی']} />
+        <Key value="ہ" onClick={onClick} status={charStatuses['ہ']} />
+        <Key value="پ" onClick={onClick} status={charStatuses['پ']} />
+      </div>
+      <div className="flex justify-center mb-1">
+        <Key value="ا" onClick={onClick} status={charStatuses['ا']} />
+        <Key value="آ" onClick={onClick} status={charStatuses['آ']} />
+        <Key value="س" onClick={onClick} status={charStatuses['س']} />
+        <Key value="ڈ" onClick={onClick} status={charStatuses['ڈ']} />
+        <Key value="د" onClick={onClick} status={charStatuses['د']} />
+        <Key value="ف" onClick={onClick} status={charStatuses['ف']} />
+        <Key value="گ" onClick={onClick} status={charStatuses['گ']} />
+        <Key value="ھ" onClick={onClick} status={charStatuses['ھ']} />
+        <Key value="ج" onClick={onClick} status={charStatuses['ج']} />
+        <Key value="ک" onClick={onClick} status={charStatuses['ک']} />
+        <Key value="ل" onClick={onClick} status={charStatuses['ل']} />
       </div>
       <div className="flex justify-center">
-        <Key width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
+        <Key classNames="enter-key" value="ENTER" onClick={onClick}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
         </Key>
-        <Key value="Z" onClick={onClick} status={charStatuses['Z']} />
-        <Key value="X" onClick={onClick} status={charStatuses['X']} />
-        <Key value="C" onClick={onClick} status={charStatuses['C']} />
-        <Key value="V" onClick={onClick} status={charStatuses['V']} />
-        <Key value="B" onClick={onClick} status={charStatuses['B']} />
-        <Key value="N" onClick={onClick} status={charStatuses['N']} />
-        <Key value="M" onClick={onClick} status={charStatuses['M']} />
-        <Key width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
+        <Key value="ذ" onClick={onClick} status={charStatuses['ذ']} />
+        <Key value="ز" onClick={onClick} status={charStatuses['ز']} />
+        <Key value="ش" onClick={onClick} status={charStatuses['ش']} />
+        <Key value="خ" onClick={onClick} status={charStatuses['خ']} />
+        <Key value="چ" onClick={onClick} status={charStatuses['چ']} />
+        <Key value="ط" onClick={onClick} status={charStatuses['ط']} />
+        <Key value="ب" onClick={onClick} status={charStatuses['ب']} />
+        <Key value="ں" onClick={onClick} status={charStatuses['ں']} />
+        <Key value="ن" onClick={onClick} status={charStatuses['ن']} />
+        <Key value="م" onClick={onClick} status={charStatuses['م']} />
+        <Key classNames="delete-key " value="DELETE" onClick={onClick}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"
+            />
+          </svg>
         </Key>
       </div>
     </div>

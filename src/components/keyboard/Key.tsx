@@ -8,6 +8,7 @@ type Props = {
   value: KeyValue
   width?: number
   status?: CharStatus
+  classNames?: string
   onClick: (value: KeyValue) => void
 }
 
@@ -16,10 +17,12 @@ export const Key = ({
   status,
   width = 40,
   value,
+  classNames = '',
   onClick,
 }: Props) => {
   const classes = classnames(
-    'flex items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none dark:text-white',
+    classNames +
+      ' flex items-center justify-center rounded mx-0.5 cursor-pointer select-none dark:text-white',
     {
       'bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 active:bg-slate-400':
         !status,
@@ -38,7 +41,7 @@ export const Key = ({
 
   return (
     <button
-      style={{ width: `${width}px`, height: '58px' }}
+      style={{ width: `${width}px`, height: '40px' }}
       className={classes}
       onClick={handleClick}
     >

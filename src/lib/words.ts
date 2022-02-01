@@ -1,10 +1,12 @@
 import { WORDS } from '../constants/wordlist'
 import { VALIDGUESSES } from '../constants/validGuesses'
+import { EXTRAS } from '../constants/extras'
 
 export const isWordInWordList = (word: string) => {
   return (
     WORDS.includes(word.toLowerCase()) ||
-    VALIDGUESSES.includes(word.toLowerCase())
+    VALIDGUESSES.includes(word.toLowerCase()) ||
+    EXTRAS.includes(word.toLowerCase())
   )
 }
 
@@ -13,11 +15,14 @@ export const isWinningWord = (word: string) => {
 }
 
 export const getWordOfDay = () => {
-  // January 1, 2022 Game Epoch
-  const epochMs = new Date('January 1, 2022 00:00:00').valueOf()
+  // January 12, 2022 Game Epoch
+  const epochMs = 1641945600000
   const now = Date.now()
   const msInDay = 86400000
-  const index = Math.floor((now - epochMs) / msInDay)
+  const index =
+    localStorage.getItem('i') != null
+      ? parseInt('' + localStorage.getItem('i'))
+      : Math.floor((now - epochMs) / msInDay)
   const nextday = (index + 1) * msInDay + epochMs
 
   return {
