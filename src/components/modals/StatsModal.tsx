@@ -39,7 +39,7 @@ export const StatsModal = ({
   handleShare,
 }: Props) => {
   function getWinMessage(): string {
-    return solution in guesses
+    return isGameWon
       ? WIN_MESSAGES[guesses.length]
       : CORRECT_WORD_MESSAGE(solution)
   }

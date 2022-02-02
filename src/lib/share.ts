@@ -28,15 +28,16 @@ export const shareStatus = (guesses: string[], lost: boolean) => {
 export const generateEmojiGrid = (guesses: string[]) => {
   return guesses
     .map((guess) => {
-      const status = getGuessStatuses(guess)
+      const status = getGuessStatuses(guess).reverse()
       return guess
         .split('')
+        .reverse()
         .map((letter, i) => {
           switch (status[i]) {
             case 'correct':
-              return '🟩'
+              return '🟦'
             case 'present':
-              return '🟨'
+              return '🟧'
             default:
               return '⬛'
           }
