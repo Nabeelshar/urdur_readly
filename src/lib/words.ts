@@ -1,4 +1,4 @@
-import { WORDS } from '../constants/wordlist'
+import { TRANSLITERATED, WORDS } from '../constants/wordlist'
 import { VALIDGUESSES } from '../constants/validGuesses'
 import { EXTRAS } from '../constants/extras'
 
@@ -6,7 +6,8 @@ export const isWordInWordList = (word: string) => {
   return (
     WORDS.includes(word.toLowerCase()) ||
     VALIDGUESSES.includes(word.toLowerCase()) ||
-    EXTRAS.includes(word.toLowerCase())
+    EXTRAS.includes(word.toLowerCase()) ||
+    TRANSLITERATED.includes(word.toLowerCase())
   )
 }
 
@@ -26,7 +27,7 @@ export const getWordOfDay = () => {
   const nextday = (index + 1) * msInDay + epochMs
 
   return {
-    solution: WORDS[index % WORDS.length].toUpperCase(),
+    solution: WORDS[index],
     solutionIndex: index,
     tomorrow: nextday,
   }
